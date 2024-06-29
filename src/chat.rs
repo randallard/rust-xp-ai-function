@@ -1,7 +1,8 @@
 use crate::Result;
 use async_openai::types::{
-    ChatChoice, ChatCompletionRequestMessage, ChatCompletionRequestUserMessageArgs, CreateChatCompletionResponse
+    ChatChoice, ChatCompletionRequestMessage, ChatCompletionRequestUserMessageArgs, ChatCompletionTool, ChatCompletionToolArgs, CreateChatCompletionResponse, FunctionObject
 };
+use serde_json::Value;
 
 
 pub fn user_msg(content: impl Into<String>) -> Result<ChatCompletionRequestMessage> {
@@ -9,6 +10,21 @@ pub fn user_msg(content: impl Into<String>) -> Result<ChatCompletionRequestMessa
         .content(content.into())
         .build()?;
     Ok(msg.into())
+}
+
+pub fn tool_fn(
+    name: impl Into<String>,
+    description: impl Into<String>,
+    parameters: Value
+) -> Result<ChatCompletionTool> {
+    let tool = ChatCompletionToolArgs::default()
+        .function(FunctionObject {
+            name: name.into(),
+            description: Some(description.into()),
+            parameters: Some(parameters),
+        })
+        .build()?;
+    Ok(tool)
 }
 
 pub fn first_choice(
