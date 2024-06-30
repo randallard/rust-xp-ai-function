@@ -1,5 +1,5 @@
 use async_openai::types::CreateChatCompletionRequest;
-use xp_ai_function::{chat, gpts, oa_client::{self, new_oa_client}};
+use xp_ai_function::{chat, gpts, oa_client::new_oa_client};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
