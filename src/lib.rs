@@ -10,5 +10,7 @@ pub mod gpts;
 pub mod oa_client;
 pub mod tools;
 
+pub mod utils;
+
 // endregion: --- Modules
 
