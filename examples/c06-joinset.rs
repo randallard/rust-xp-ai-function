@@ -1,6 +1,6 @@
 use tokio::task::JoinSet;
-use xp_ai_function::{chat, conv, oa_client::new_oa_client, tools::{new_ai_tools, AiTools}};
-use rpc_router::{router_builder, RpcParams};
+use xp_ai_function::{chat, conv, model::ModelManager, oa_client::new_oa_client, tools::{new_ai_tools, AiTools}};
+use rpc_router::{resources_builder, router_builder, RpcParams};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -11,6 +11,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // -- Get the AI Tools
     let ai_tools = new_ai_tools(None)?;
+
+    let mm = ModelManager::default();
+    let ai_tools = new_ai_tools(Some(resources_builder![mm]))?;
 
     // -- User question
     let questions = &[

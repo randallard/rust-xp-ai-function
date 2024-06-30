@@ -4,7 +4,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use crate::chat;
+use crate::{chat, model::ModelManager};
 
 pub(super) fn router_builder() -> RouterBuilder {
     router_builder![get_weather]
@@ -41,7 +41,10 @@ struct Weather {
     humidity_rh: f32,
 }
 
-async fn get_weather(params: GetWeatherParams) -> Result<Weather, String> {
+async fn get_weather(
+    mm: ModelManager,
+    params: GetWeatherParams
+) -> Result<Weather, String> {
     Ok(Weather {
         temperature: 30.,
         unit: params.unit,
